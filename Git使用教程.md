@@ -1,12 +1,13 @@
 **git使用教程**
 
-基础：
-		1 初始化：git init
+**基础**：
+		
+1： 初始化：git init
 
 		2 账号名字和邮件输入：
 
 			git config --global user.email "你的邮箱"
-			git config --global user.name "你的名字"
+			git config --global user.n********ame "你的名字"
 
 		3
 			1、在本机添加文件，echo "测试本机与远程库" >> test.txt;
@@ -22,7 +23,7 @@
 
 
 
-git删除远程仓库文件
+2： git删除远程仓库文件
 
 
 			1.先在本地git清除文件夹
@@ -37,7 +38,7 @@ git删除远程仓库文件
 
 			　　git push -u origin master
 
-恢复本地仓库的文件	
+3：恢复本地仓库的文件	
 			1 查看删除文件的缓冲状态：
 							 git status
 				
