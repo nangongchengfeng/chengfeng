@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--@Configuration-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <bean id="music1" class="com.wei.demo.soundsystem.Music">
+        <constructor-arg name="title" value="长风破浪"/>
+        <constructor-arg name="date" value="12"/>
+    </bean>
+    <bean id="music2" class="com.wei.demo.soundsystem.Music">
+        <constructor-arg name="title" value="长风破浪"/>
+        <constructor-arg name="date" value="12"/>
+    </bean>
+    <bean id="music3" class="com.wei.demo.soundsystem.Music">
+        <constructor-arg name="title" value="长风破浪"/>
+        <constructor-arg name="date" value="12"/>
+    </bean>
+    <bean name="compactDisc" class="com.wei.demo.soundsystem.CompactDisc">
+        <constructor-arg name="title" value="I DO "/>
+        <constructor-arg name="name" value=" Mowen"/>
+        <constructor-arg name="track">
+            <list>
+                <!--<value>我爱你</value>-->
+                <!--<value>我爱你2</value>-->
+                <!--<value>我爱你3</value>-->
+                <!--<value>我爱你4</value>-->
+                <ref bean="music1"/>
+                <ref bean="music2"/>
+                <ref bean="music3"/>
+
+
+            </list>
+        </constructor-arg>
+    </bean>
+    <bean name="compactDisc2" class="com.wei.demo.soundsystem.CompactDisc" c:title="niaho" c:name="南宫乘风"/>
+    <!--<bean name="compactDisc2" class="com.wei.demo.soundsystem.CompactDisc"/>-->
+    <!--<bean id="cdplayer1" class="com.wei.demo.soundsystem.CdPlay">-->
+    <!--<constructor-arg ref="compactDisc1"/>-->
+    <!--</bean>-->
+    <!--<bean id="cdplay2" class="com.wei.demo.soundsystem.CdPlay" c:cd-ref="compactDisc2"></bean>-->
+</beans>
