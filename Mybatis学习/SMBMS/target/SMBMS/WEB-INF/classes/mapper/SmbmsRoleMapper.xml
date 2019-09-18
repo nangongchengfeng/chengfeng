@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smbms.mapper.SmbmsRoleMapper">
+  <resultMap id="BaseResultMap" type="com.smbms.model.SmbmsRole">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="role_Code" jdbcType="VARCHAR" property="roleCode" />
+    <result column="role_Name" jdbcType="VARCHAR" property="roleName" />
+    <result column="created_By" jdbcType="BIGINT" property="createdBy" />
+    <result column="creation_Date" jdbcType="TIMESTAMP" property="creationDate" />
+    <result column="modify_By" jdbcType="BIGINT" property="modifyBy" />
+    <result column="modify_Date" jdbcType="TIMESTAMP" property="modifyDate" />
+  </resultMap>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, role_Code, role_Name, created_By, creation_Date, modify_By, modify_Date
+    from smbms_role
+  </select>
+</mapper>

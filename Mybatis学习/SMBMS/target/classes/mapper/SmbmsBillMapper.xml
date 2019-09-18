@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smbms.mapper.SmbmsBillMapper">
+  <resultMap id="BaseResultMap" type="com.smbms.model.SmbmsBill">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="bill_Code" jdbcType="VARCHAR" property="billCode" />
+    <result column="product_Name" jdbcType="VARCHAR" property="productName" />
+    <result column="product_Desc" jdbcType="VARCHAR" property="productDesc" />
+    <result column="product_Unit" jdbcType="VARCHAR" property="productUnit" />
+    <result column="product_Count" jdbcType="DECIMAL" property="productCount" />
+    <result column="total_Price" jdbcType="DECIMAL" property="totalPrice" />
+    <result column="is_Payment" jdbcType="INTEGER" property="isPayment" />
+    <result column="created_By" jdbcType="BIGINT" property="createdBy" />
+    <result column="creation_Date" jdbcType="TIMESTAMP" property="creationDate" />
+    <result column="modify_By" jdbcType="BIGINT" property="modifyBy" />
+    <result column="modify_Date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="provider_Id" jdbcType="BIGINT" property="providerId" />
+  </resultMap>
+  <resultMap id="withProvider" type="com.smbms.model.SmbmsBill" extends="BaseResultMap">
+    <association property="provider" javaType="com.smbms.model.SmbmsProvider">
+      <id column="provider_Id" property="id"/>
+      <result column="pro_Name" property="proName"/>
+    </association>
+  </resultMap>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, bill_Code, product_Name, product_Desc, product_Unit, product_Count, total_Price, 
+    is_Payment, created_By, creation_Date, modify_By, modify_Date, provider_Id
+    from smbms_bill
+  </select>
+
+  <select id="query" resultMap="withProvider">
+        select b.id, b.bill_Code, b.product_Name, b.product_Desc, b.product_Unit, b.product_Count,
+        b.total_Price, b.is_Payment, b.created_By, b.creation_Date, b.modify_By, b.modify_Date,
+        b.provider_Id,
+        p.id,p.pro_Name
+        from smbms_bill b  left join  smbms_provider p on
+        b.provider_Id = p.id
+        <where>
+          <if test="providerId != null and providerId != 0">
+            and b.provider_Id = #{providerId}
+          </if>
+          <if test="productName != null and productName != ''">
+            and b.product_Name = #{productName}
+          </if>
+          <if test="isPayment == 1 or isPayment == 2">
+            and b.is_Payment = #{isPayment}
+          </if>
+        </where>
+  </select>
+
+  <delete id="delete">
+    delete
+    from smbms_bill
+    where id = #{id}
+  </delete>
+
+  <select id="get" resultMap="withProvider">
+    select b.id, b.bill_Code, b.product_Name, b.product_Desc, b.product_Unit, b.product_Count,
+    b.total_Price, b.is_Payment, b.created_By, b.creation_Date, b.modify_By, b.modify_Date,
+    b.provider_Id,
+    p.id,p.pro_Name
+    from smbms_bill b  left join  smbms_provider p on
+    b.provider_Id = p.id
+    <where>
+      b.id = #{id}
+    </where>
+  </select>
+
+  <update id="update">
+    update
+    smbms_bill
+    <set>
+      <if test="productName != null and productName != ''">
+        product_name = #{productName},
+      </if>
+      <if test="productUnit != null and productUnit != ''">
+        product_Unit = #{productUnit},
+      </if>
+      <if test="productCount != null ">
+        product_Count = #{productCount},
+      </if>
+      <if test="totalPrice != null ">
+        total_Price = #{totalPrice},
+      </if>
+      <if test="providerId != null  ">
+        provider_Id = #{providerId},
+      </if>
+      <if test="isPayment != null  ">
+        is_Payment = #{isPayment},
+      </if>
+    </set>
+    <where>
+      id = #{id}
+    </where>
+  </update>
+
+  <insert id="insert">
+    insert into smbms_bill
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="billCode != null and billCode != ''">
+        bill_Code,
+      </if>
+      <if test="productName != null and productName != ''">
+        product_name,
+      </if>
+      <if test="productUnit != null and productUnit != ''">
+        product_Unit,
+      </if>
+      <if test="productCount != null ">
+        product_Count,
+      </if>
+      <if test="totalPrice != null ">
+        total_Price ,
+      </if>
+      <if test="providerId != null  ">
+        provider_Id ,
+      </if>
+      <if test="isPayment != null  ">
+        is_Payment ,
+      </if>
+      <if test="createdBy != null  ">
+        created_By ,
+      </if>
+      <if test="creationDate != null  ">
+        creation_Date ,
+      </if>
+    </trim>
+
+    <trim prefix="value(" suffix=")" suffixOverrides=",">
+      <if test="billCode != null and billCode != ''">
+         #{billCode},
+      </if>
+      <if test="productName != null and productName != ''">
+        #{productName},
+      </if>
+      <if test="productUnit != null and productUnit != ''">
+        #{productUnit},
+      </if>
+      <if test="productCount != null ">
+        #{productCount},
+      </if>
+      <if test="totalPrice != null ">
+        #{totalPrice},
+      </if>
+      <if test="providerId != null  ">
+        #{providerId},
+      </if>
+      <if test="isPayment != null  ">
+        #{isPayment},
+      </if>
+      <if test="createdBy != null  ">
+        #{createdBy},
+      </if>
+      <if test="creationDate != null  ">
+        #{creationDate},
+      </if>
+    </trim>
+  </insert>
+</mapper>

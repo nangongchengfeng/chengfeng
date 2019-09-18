@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smbms.mapper.SmbmsAddressMapper">
+  <resultMap id="BaseResultMap" type="com.smbms.model.SmbmsAddress">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
+    <result column="address_Desc" jdbcType="VARCHAR" property="addressDesc" />
+    <result column="post_Code" jdbcType="VARCHAR" property="postCode" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="created_By" jdbcType="BIGINT" property="createdBy" />
+    <result column="creation_Date" jdbcType="TIMESTAMP" property="creationDate" />
+    <result column="modify_By" jdbcType="BIGINT" property="modifyBy" />
+    <result column="modify_Date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="user_Id" jdbcType="BIGINT" property="userId" />
+  </resultMap>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, contact, address_Desc, post_Code, tel, created_By, creation_Date, modify_By, 
+    modify_Date, user_Id
+    from smbms_address
+  </select>
+</mapper>

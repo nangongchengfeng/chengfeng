@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+
+<!--
+    通过resource属性引入外部的属性文件
+    引入外部之后它的优先级高于内部书写的内容
+-->
+    <properties  resource="db.properties"/>
+
+
+    <settings>
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+<!--        开启二级缓存-->
+        <setting name="cacheEnabled" value="true"/>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <!--
+    注册别名
+    2种方式
+        1 单个注册
+        2 包注册
+-->
+    <typeAliases>
+        <package name="com.smbms.model"/>
+    </typeAliases>
+    <environments default="dev">
+        <environment id="dev">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+<!--                配置连接数据库的四个基本属性-->
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+<!--        写了这样，mybatis才知道这个文件的存在-->
+        <mapper resource="mapper/SmbmsUserMapper.xml"/>
+        <mapper resource="mapper/SmbmsProviderMapper.xml"/>
+        <mapper resource="mapper/SmbmsBillMapper.xml"/>
+    </mappers>
+</configuration>

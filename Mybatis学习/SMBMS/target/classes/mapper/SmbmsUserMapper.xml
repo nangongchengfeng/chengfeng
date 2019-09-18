@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smbms.mapper.SmbmsUserMapper">
+  <resultMap id="BaseResultMap" type="com.smbms.model.SmbmsUser">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_Code" jdbcType="VARCHAR" property="userCode" />
+    <result column="user_Name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_Password" jdbcType="VARCHAR" property="userPassword" />
+    <result column="gender" jdbcType="INTEGER" property="gender" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="created_By" jdbcType="BIGINT" property="createdBy" />
+    <result column="creation_Date" jdbcType="TIMESTAMP" property="creationDate" />
+    <result column="modify_By" jdbcType="BIGINT" property="modifyBy" />
+    <result column="modify_Date" jdbcType="TIMESTAMP" property="modifyDate" />
+  </resultMap>
+  <resultMap id="withRole" type="SmbmsUser" extends="BaseResultMap">
+    <association property="role" javaType="SmbmsRole">
+      <id column="user_role" property="id"/>
+      <result column="role_Name" property="roleName"/>
+    </association>
+  </resultMap>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, user_Code, user_Name, user_Password, gender, birthday, phone, address, 
+    user_Role, created_By, creation_Date, modify_By, modify_Date
+    from smbms_user
+  </select>
+
+  <select id="select" resultType="smbmsUser">
+    select id, user_Code, user_Name, user_Password, gender, birthday, phone, address,
+    user_Role, created_By, creation_Date, modify_By, modify_Date
+    from smbms_user
+    <where>
+      <if test="userCode != null and userCode != ''">
+        and user_code =#{userCode}
+      </if>
+      <if test="userPassword != null and userPassword != ''">
+        and user_password =#{userPassword}
+      </if>
+    </where>
+  </select>
+
+  <select id="queryByCodePwd" resultType="SmbmsUser">
+      select id, user_Code, user_Name, user_Password, gender, birthday, phone, address,
+    user_Role, created_By, creation_Date, modify_By, modify_Date
+    from smbms_user
+    <where>
+        <if test="userCode != null">
+          and user_code = #{userCode}
+        </if>
+        <if test="oldPassword != null">
+          and user_password = #{oldPassword}
+        </if>
+    </where>
+  </select>
+
+  <update id="updatePwd">
+    update smbms_user
+    <set>
+      user_password = #{newPassword}
+    </set>
+    <where>
+      user_code = #{userCode}
+    </where>
+  </update>
+
+  <select id="countUserNameRole" resultType="long">
+        select count(*)
+        from
+        smbms_user
+        <where>
+          <if test="userName != null and userName != ''">
+            <bind name="newUserName" value="'%'+userName+'%'"></bind>
+            and user_name like #{newUserName}
+          </if>
+          <if test="userRole != null and userRole != 0 ">
+            and user_role = #{userRole}
+          </if>
+        </where>
+  </select>
+  <select id="queryUserNameRole" resultMap="withRole">
+    select u.id, u.user_Code, u.user_Name, u.user_Password, u.gender,
+     u.birthday, u.phone, u.address, u.user_Role, u.created_By,
+      u.creation_Date, u.modify_By, u.modify_Date,
+      r.role_Name
+    from smbms_user u , smbms_role r
+    <where>
+      u.user_role = r.id
+
+      <if test="userName != null and userName != ''">
+        <bind name="newUserName" value="'%'+userName+'%'"></bind>
+        and u.user_name like #{newUserName}
+      </if>
+      <if test="userRole != null  and userRole != 0 ">
+        and r.id = #{userRole}
+      </if>
+    </where>
+    limit #{start},#{counter}
+
+  </select>
+
+  <delete id="deleteById">
+    delete
+    from smbms_user
+    <where>
+      id = #{id}
+    </where>
+  </delete>
+
+  <select id="queryById" resultMap="withRole">
+    select u.id, u.user_Code, u.user_Name, u.user_Password, u.gender,
+    u.birthday, u.phone, u.address, u.user_Role, u.created_By,
+    u.creation_Date, u.modify_By, u.modify_Date,
+    r.role_Name
+    from smbms_user u , smbms_role r
+    <where>
+      u.user_role = r.id
+        and u.id = #{id}
+    </where>
+  </select>
+
+  <update id="update">
+    update smbms_user
+    <set>
+      <if test="userName != null and userName != ''">
+        user_name = #{userName},
+      </if>
+      <if test="gender == 1 or gender == 2">
+        gender = #{gender},
+      </if>
+      <if test="birthday != null ">
+        birthday = #{birthday},
+      </if>
+      <if test="phone != null and phone != ''">
+        phone = #{phone},
+      </if>
+      <if test="address != null and address != ''">
+        address = #{address},
+      </if>
+      <if test="userRole != null ">
+        user_role = #{userRole},
+      </if>
+      <if test="modifyBy != null  ">
+        modify_by = #{modifyBy},
+      </if>
+      <if test="modifyDate != null ">
+        modify_Date = #{modifyDate},
+      </if>
+    </set>
+    <where>
+      id = #{id}
+    </where>
+  </update>
+
+  <insert id="insert">
+    insert into
+    smbms_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userCode != null">
+        user_code,
+      </if>
+      <if test="userName != null">
+        user_Name,
+      </if>
+      <if test="userPassword != null">
+        user_Password,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="userRole != null">
+        user_Role,
+      </if>
+      <if test="gender != null">
+        gender,
+      </if>
+      <if test="birthday != null">
+        birthday,
+      </if>
+      <if test="createdBy != null">
+        created_By,
+      </if>
+      <if test="creationDate != null">
+        creation_Date,
+      </if>
+    </trim>
+
+
+
+    <trim prefix="value(" suffix=")" suffixOverrides="," >
+      <if test="userCode != null">
+        #{userCode},
+      </if>
+      <if test="userName != null">
+        #{userName},
+      </if>
+      <if test="userPassword != null">
+        #{userPassword},
+      </if>
+      <if test="phone != null">
+        #{phone},
+      </if>
+      <if test="address != null">
+        #{ address},
+      </if>
+      <if test="userRole != null">
+        #{userRole},
+      </if>
+      <if test="gender != null">
+        #{gender},
+      </if>
+      <if test="birthday != null">
+        #{birthday},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy},
+      </if>
+      <if test="creationDate != null">
+        #{creationDate},
+      </if>
+    </trim>
+  </insert>
+</mapper>

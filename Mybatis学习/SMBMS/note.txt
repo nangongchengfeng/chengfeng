@@ -1,0 +1,4 @@
+如果你的启动有乱码
+idea.exe.vmoptions
+在最后添加一下编码指定
+-Dfile.encoding=UTF-8

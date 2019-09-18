@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smbms.mapper.SmbmsProviderMapper">
+  <resultMap id="BaseResultMap" type="com.smbms.model.SmbmsProvider">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="pro_Code" jdbcType="VARCHAR" property="proCode" />
+    <result column="pro_Name" jdbcType="VARCHAR" property="proName" />
+    <result column="pro_Desc" jdbcType="VARCHAR" property="proDesc" />
+    <result column="pro_Contact" jdbcType="VARCHAR" property="proContact" />
+    <result column="pro_Phone" jdbcType="VARCHAR" property="proPhone" />
+    <result column="pro_Address" jdbcType="VARCHAR" property="proAddress" />
+    <result column="pro_Fax" jdbcType="VARCHAR" property="proFax" />
+    <result column="created_By" jdbcType="BIGINT" property="createdBy" />
+    <result column="creation_Date" jdbcType="TIMESTAMP" property="creationDate" />
+    <result column="modify_Date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="modify_By" jdbcType="BIGINT" property="modifyBy" />
+  </resultMap>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, pro_Code, pro_Name, pro_Desc, pro_Contact, pro_Phone, pro_Address, pro_Fax, 
+    created_By, creation_Date, modify_Date, modify_By
+    from smbms_provider
+  </select>
+  <select id="query" resultType="SmbmsProvider">
+    select id, pro_Code, pro_Name, pro_Desc, pro_Contact, pro_Phone, pro_Address, pro_Fax,
+    created_By, creation_Date, modify_Date, modify_By
+    from smbms_provider
+    <where>
+      <if test="proCode != null and proCode != ''">
+        and pro_code = #{proCode}
+      </if>
+      <if test="proName != null and proName != ''">
+      <bind name="newProName" value="'%'+proName+'%'"></bind>
+        and pro_Name like #{newProName}
+      </if>
+    </where>
+  </select>
+
+  <delete id="delete">
+    delete from smbms_provider
+    where id = #{id}
+  </delete>
+  <select id="get" resultType="SmbmsProvider">
+     select id, pro_Code, pro_Name, pro_Desc, pro_Contact, pro_Phone, pro_Address, pro_Fax,
+    created_By, creation_Date, modify_Date, modify_By
+    from smbms_provider
+    <where>
+      id = #{id}
+    </where>
+  </select>
+
+  <update id="update">
+    update smbms_provider
+    <set>
+      <if test="proName != null and proName != ''">
+        pro_name = #{proName},
+      </if>
+      <if test="proPhone != null and proPhone != ''">
+        pro_Phone = #{proPhone},
+      </if>
+      <if test="proAddress != null and proAddress != ''">
+        pro_Address = #{proAddress},
+      </if>
+      <if test="proContact != null and proContact != ''">
+        pro_Contact = #{proContact},
+      </if>
+      <if test="proFax != null and proFax != ''">
+        pro_Fax = #{proFax},
+      </if>
+      <if test="proDesc != null and proDesc != ''">
+        pro_Desc = #{proDesc},
+      </if>
+      <if test="modifyBy != null">
+        modify_By = #{modifyBy},
+      </if>
+      <if test="modifyDate != null">
+        modify_Date = #{modifyDate},
+      </if>
+    </set>
+    <where>
+      id = #{id}
+    </where>
+  </update>
+
+  <insert id="insert">
+    insert into smbms_provider
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="proCode != null and proCode != ''">
+        pro_Code,
+      </if>
+      <if test="proName != null and proName != ''">
+        pro_name,
+      </if>
+      <if test="proPhone != null and proPhone != ''">
+        pro_Phone,
+      </if>
+      <if test="proAddress != null and proAddress != ''">
+        pro_Address ,
+      </if>
+      <if test="proContact != null and proContact != ''">
+        pro_Contact,
+      </if>
+      <if test="proFax != null and proFax != ''">
+        pro_Fax ,
+      </if>
+      <if test="proDesc != null and proDesc != ''">
+        pro_Desc,
+      </if>
+      <if test="createdBy != null">
+        created_By,
+      </if>
+      <if test="creationDate != null">
+        creation_Date,
+      </if>
+    </trim>
+    <trim prefix="value(" suffix=")" suffixOverrides=",">
+      <if test="proCode != null and proCode != ''">
+        #{proCode},
+      </if>
+      <if test="proName != null and proName != ''">
+        #{proName},
+      </if>
+      <if test="proPhone != null and proPhone != ''">
+        #{ proPhone},
+      </if>
+      <if test="proAddress != null and proAddress != ''">
+        #{proAddress },
+      </if>
+      <if test="proContact != null and proContact != ''">
+        #{proContact},
+      </if>
+      <if test="proFax != null and proFax != ''">
+        #{proFax} ,
+      </if>
+      <if test="proDesc != null and proDesc != ''">
+        #{proDesc},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy},
+      </if>
+      <if test="creationDate != null">
+        #{creationDate},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="queryAll" resultType="SmbmsProvider">
+     select id, pro_Code, pro_Name, pro_Desc, pro_Contact, pro_Phone, pro_Address, pro_Fax,
+    created_By, creation_Date, modify_Date, modify_By
+    from smbms_provider
+  </select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
